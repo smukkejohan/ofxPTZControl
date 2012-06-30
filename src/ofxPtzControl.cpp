@@ -16,6 +16,16 @@ ofxPTZControl::ofxPTZControl(){
     port = 80;
 }
 
+void ofxPTZControl::init() {
+    init(ip, port);
+}
+
+void ofxPTZControl::init(string ip_v, int port_v) {
+    ip = ip_v;
+    port = port_v;
+    powerOn();
+}
+
 
 void ofxPTZControl::powerOn(){
     sendCommand("O1");

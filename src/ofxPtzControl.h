@@ -5,6 +5,7 @@
 //  Created by Johan Bichel Lindegaard on 29/06/12.
 //
 
+
 #pragma once
 
 #include "ofMain.h"
@@ -12,6 +13,10 @@
 class ofxPTZControl {
 public:
     ofxPTZControl();
+    
+    
+    void init();
+    void init(string ip, int port);
     
     string ip;
     int port;
