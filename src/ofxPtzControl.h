@@ -1,5 +1,5 @@
 //
-//  ofxPtzControl.h
+//  ofxPTZControl.h
 //  ptzControl
 //
 //  Created by Johan Bichel Lindegaard on 29/06/12.
@@ -9,9 +9,9 @@
 
 #include "ofMain.h"
 
-class ofxPtzControl {
+class ofxPTZControl {
 public:
-    ofxPtzControl();
+    ofxPTZControl();
     
     string ip;
     int port;
