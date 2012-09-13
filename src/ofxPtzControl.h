@@ -42,9 +42,10 @@ public:
     int getPanSpeed();
     int getZoomSpeed();
     
+    float lastCMDTime;
+    string lastcmd;
     
-    
-    
+    int cmdInterval;
     
     //void stop();
     
@@ -52,8 +53,8 @@ public:
     
 private:
     
-    ofHttpResponse response;
-    
+    ofHttpResponse response;    
     string sendCommand(string cmd);
-    
+    ofHttpResponse sendRawCommand(string cmd);
+
 };

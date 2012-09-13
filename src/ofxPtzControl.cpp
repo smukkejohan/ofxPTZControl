@@ -11,8 +11,7 @@
 
 ofxPTZControl::ofxPTZControl(){
     // consider loading settings from xml
-    
-    ip = "192.168.0.10";
+    ip = "192.168.0.11";
     port = 80;
 }
 
@@ -21,6 +20,9 @@ void ofxPTZControl::init() {
 }
 
 void ofxPTZControl::init(string ip_v, int port_v) {
+    
+    lastCMDTime = ofGetElapsedTimeMillis();
+    
     ip = ip_v;
     port = port_v;
     powerOn();
@@ -61,13 +63,31 @@ pair<int, int> ofxPTZControl::getPanTiltPos(){
 }
 
 string ofxPTZControl::sendCommand(string command){
-    
-    // todo: add 120ms timer to not overflow with movement commands
-    
+         
     string cmd = "http://" + ip + ":" + ofToString(port) + "/cgi-bin/aw_ptz?cmd=%23" + command + "&res=1";
-    cout<<"Sending command: " + cmd<<endl;
-    response = ofLoadURL(cmd);
-    cout<<"Response: "<<response.data<<endl;
+    
+    float currentTime = ofGetElapsedTimeMillis();
+    
+    if (currentTime - lastCMDTime > 120){
+        // dont spam the same command
+        response = sendRawCommand(cmd);
+        lastcmd = cmd;
+        lastCMDTime = currentTime;
+    } else if (lastcmd != cmd) {
+        // if it is a new command wait untill 120 ms since the last command send, then send it
+        ofSleepMillis(120 - (currentTime - lastCMDTime));
+        response = sendRawCommand(cmd);
+        lastcmd = cmd;
+        lastCMDTime = currentTime;
+    }
+    
     return response.data;
+}
+
+ofHttpResponse ofxPTZControl::sendRawCommand(string command) {
+    cout<<"Sending command: " + command<<endl;
+    response = ofLoadURL(command);
+    cout<<"Response: "<<response.data<<endl;
+    return response;
 }
 
